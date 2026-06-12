@@ -1,10 +1,12 @@
 import Globe from "react-globe.gl";
 import { useEffect, useState } from "react";
 import { feature } from "topojson-client";
+import { useNavigate } from "react-router-dom";
 
 function GlobeView() {
   const [countries, setCountries] = useState([]);
   const [hoverD, setHoverD] = useState(null);
+  const navigate = useNavigate();
 
   const [tooltip, setTooltip] = useState({
     visible: false,
@@ -63,6 +65,12 @@ function GlobeView() {
           d === hoverD ? 0.04 : 0.01
         }
         onPolygonHover={handleHover}
+
+        onPolygonClick={(country) => {
+  navigate(
+    `/country/${country.properties.name}`
+  );
+}}
       />
 
       {tooltip.visible && (
