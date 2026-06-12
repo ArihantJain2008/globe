@@ -1,18 +1,18 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import worldData from "../data/world.geojson";
 
 function MapChart() {
   const svgRef = useRef();
 
   useEffect(() => {
-    const svg = d3.select(svgRef.current);
+  const svg = d3.select(svgRef.current);
 
-    svg.selectAll("*").remove();
+  svg.selectAll("*").remove();
 
+  d3.json("/world.geojson").then((worldData) => {
     const projection = d3
       .geoMercator()
-      .scale(100)
+      .scale(120)
       .translate([400, 250]);
 
     const pathGenerator = d3.geoPath().projection(projection);
@@ -25,14 +25,15 @@ function MapChart() {
       .attr("d", pathGenerator)
       .attr("fill", "#1e293b")
       .attr("stroke", "#475569")
+      .attr("stroke-width", 0.5)
       .on("mouseover", function () {
         d3.select(this).attr("fill", "#38bdf8");
       })
       .on("mouseout", function () {
         d3.select(this).attr("fill", "#1e293b");
       });
-
-  }, []);
+  });
+}, []);
 
   return (
     <svg
